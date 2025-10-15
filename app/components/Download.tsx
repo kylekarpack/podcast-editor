@@ -1,3 +1,5 @@
+import Waveform from "./Waveform";
+
 export default function Download({ audioUrl, videoFile }: { audioUrl: string | null, videoFile: File | null }) {
   const handleDownload = () => {
     if (!audioUrl || !videoFile) return;
@@ -46,12 +48,7 @@ export default function Download({ audioUrl, videoFile }: { audioUrl: string | n
 
       {/* Audio Player */}
       <div className="mt-4">
-        <audio
-          controls
-          src={audioUrl}
-          className="w-full"
-          style={{ height: "40px" }}
-        />
+        <Waveform audioUrl={audioUrl} />
       </div>
     </div>
   ) : null;

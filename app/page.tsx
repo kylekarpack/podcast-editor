@@ -20,7 +20,9 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const loadFFmpeg = async () => {
-    if (ffmpegRef.current?.loaded) return;
+    if (ffmpegRef.current?.loaded) {
+      return;
+    };
 
     const ffmpeg = new FFmpeg();
     ffmpegRef.current = ffmpeg;
@@ -110,7 +112,6 @@ export default function Home() {
       await ffmpeg.deleteFile("output.mp3");
     } catch (err) {
       console.error("Error extracting audio:", err);
-      console.log("test1");
       setError(
         err instanceof Error
           ? err.message
