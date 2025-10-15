@@ -37,7 +37,7 @@ export default function Home() {
 
     try {
       const baseURL =
-        "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
+        "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd";
       await ffmpeg.load({
         coreURL: await toBlobURL(
           `${baseURL}/ffmpeg-core.js`,
