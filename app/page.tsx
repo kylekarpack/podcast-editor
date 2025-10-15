@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import { useState, useRef } from "react";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
 
 export default function Home() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState<number>(0);
@@ -20,26 +20,33 @@ export default function Home() {
     const ffmpeg = new FFmpeg();
     ffmpegRef.current = ffmpeg;
 
-    ffmpeg.on('log', ({ message }) => {
+    ffmpeg.on("log", ({ message }) => {
       console.log(message);
     });
 
-    ffmpeg.on('progress', ({ progress: prog }) => {
+    ffmpeg.on("progress", ({ progress: prog }) => {
       setProgress(Math.round(prog * 100));
     });
 
-    setLoadingMessage('Loading FFmpeg...');
-    
+    setLoadingMessage("Loading FFmpeg...");
+
     try {
-      const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+      const baseURL =
+        "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
       await ffmpeg.load({
-        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+        coreURL: await toBlobURL(
+          `${baseURL}/ffmpeg-core.js`,
+          "text/javascript"
+        ),
+        wasmURL: await toBlobURL(
+          `${baseURL}/ffmpeg-core.wasm`,
+          "application/wasm"
+        ),
       });
-      setLoadingMessage('FFmpeg loaded successfully!');
+      setLoadingMessage("FFmpeg loaded successfully!");
     } catch (err) {
-      console.error('Error loading FFmpeg:', err);
-      throw new Error('Failed to load FFmpeg');
+      console.error("Error loading FFmpeg:", err);
+      throw new Error("Failed to load FFmpeg");
     }
   };
 
@@ -65,27 +72,45 @@ export default function Home() {
       await loadFFmpeg();
       const ffmpeg = ffmpegRef.current!;
 
-      setLoadingMessage('Reading video file...');
-      await ffmpeg.writeFile('input.mp4', await fetchFile(videoFile));
+      setLoadingMessage("Reading video file...");
+      await ffmpeg.writeFile("input.mp4", await fetchFile(videoFile));
 
-      setLoadingMessage('Extracting audio...');
-      await ffmpeg.exec(['-i', 'input.mp4', '-vn', '-acodec', 'libmp3lame', '-q:a', '2', 'output.mp3']);
+      setLoadingMessage("Extracting audio...");
+      await ffmpeg.exec([
+        "-i",
+        "input.mp4",
+        "-vn",
+        "-acodec",
+        "libmp3lame",
+        "-q:a",
+        "2",
+        "output.mp3",
+      ]);
 
-      setLoadingMessage('Preparing download...');
-      const data = await ffmpeg.readFile('output.mp3');
-      const blob = new Blob([data], { type: 'audio/mp3' });
-      const url = URL.createObjectURL(blob);
-      
-      setAudioUrl(url);
-      setLoadingMessage('Audio extraction complete!');
-      
+      setLoadingMessage("Preparing download...");
+      try {
+        const data = await ffmpeg.readFile("output.mp3");
+        const blob = new Blob([data], { type: "audio/mp3" });
+        const url = URL.createObjectURL(blob);
+
+        setAudioUrl(url);
+        setLoadingMessage("Audio extraction complete!");
+      } catch (err) {
+        console.error("Error reading output file:", err);
+        setError("File contained no audio");
+      }
+
       // Clean up
-      await ffmpeg.deleteFile('input.mp4');
-      await ffmpeg.deleteFile('output.mp3');
+      await ffmpeg.deleteFile("input.mp4");
+      await ffmpeg.deleteFile("output.mp3");
     } catch (err) {
-      console.error('Error extracting audio:', err);
-      console.log("test1")
-      setError(err instanceof Error ? err.message : 'An error occurred while extracting audio');
+      console.error("Error extracting audio:", err);
+      console.log("test1");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred while extracting audio"
+      );
     } finally {
       setIsLoading(false);
       setProgress(0);
@@ -94,10 +119,10 @@ export default function Home() {
 
   const handleDownload = () => {
     if (!audioUrl || !videoFile) return;
-    
-    const a = document.createElement('a');
+
+    const a = document.createElement("a");
     a.href = audioUrl;
-    a.download = videoFile.name.replace(/\.[^/.]+$/, '.mp3');
+    a.download = videoFile.name.replace(/\.[^/.]+$/, ".mp3");
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -108,9 +133,9 @@ export default function Home() {
     setAudioUrl(null);
     setError(null);
     setProgress(0);
-    setLoadingMessage('');
+    setLoadingMessage("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -139,8 +164,8 @@ export default function Home() {
                 transition-all duration-200
                 ${
                   videoFile
-                    ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                    : 'border-gray-300 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? "border-green-500 bg-green-50 dark:bg-green-900/20"
+                    : "border-gray-300 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
                 }
               `}
             >
@@ -213,8 +238,8 @@ export default function Home() {
                 transition-all duration-200 transform
                 ${
                   !videoFile || isLoading
-                    ? 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl'
+                    ? "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
+                    : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
                 }
               `}
             >
@@ -242,7 +267,7 @@ export default function Home() {
                   Processing...
                 </span>
               ) : (
-                '🎵 Extract Audio'
+                "🎵 Extract Audio"
               )}
             </button>
 
@@ -279,7 +304,7 @@ export default function Home() {
 
           {/* Loading Message */}
           {loadingMessage && (
-            <div className={`p-4 rounded-lg mb-6 ${error ? 'hidden' : ''}`}>
+            <div className={`p-4 rounded-lg mb-6 ${error ? "hidden" : ""}`}>
               <p className="text-center text-sm font-medium text-gray-600 dark:text-gray-400">
                 {loadingMessage}
               </p>
@@ -340,14 +365,14 @@ export default function Home() {
                   Download MP3
                 </button>
               </div>
-              
+
               {/* Audio Player */}
               <div className="mt-4">
                 <audio
                   controls
                   src={audioUrl}
                   className="w-full"
-                  style={{ height: '40px' }}
+                  style={{ height: "40px" }}
                 />
               </div>
             </div>
@@ -394,10 +419,11 @@ export default function Home() {
               </p>
             </div>
           </div>
-          
+
           <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
             <p className="text-sm text-blue-800 dark:text-blue-300">
-              <strong>🔒 Privacy:</strong> All processing happens in your browser. Your files never leave your device!
+              <strong>🔒 Privacy:</strong> All processing happens in your
+              browser. Your files never leave your device!
             </p>
           </div>
         </div>
