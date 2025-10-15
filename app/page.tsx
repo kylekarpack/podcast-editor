@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useRef } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
-import Info from "./components/Info";
+import { useRef, useState } from "react";
 import Download from "./components/Download";
+import ErrorMessage from "./components/ErrorMessage";
+import Headline from "./components/Headline";
+import Info from "./components/Info";
+import LoadingMessage from "./components/LoadingMessage";
 
 export default function Home() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -134,14 +137,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Video to Audio Converter
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Extract audio from your video files instantly in your browser
-          </p>
-        </div>
+        <Headline />
 
         {/* Main Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 mb-6">
@@ -224,13 +220,14 @@ export default function Home() {
             <button
               onClick={extractAudio}
               disabled={!videoFile || isLoading}
+              type="button"
               className={`
                 flex-1 py-4 px-6 rounded-xl font-semibold text-white
-                transition-all duration-200 transform
+                transition-all duration-200 transform cursor-pointer
                 ${
                   !videoFile || isLoading
                     ? "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
-                    : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                    : "bg-blue-600 hover:bg-blue-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
                 }
               `}
             >
@@ -286,41 +283,21 @@ export default function Home() {
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 h-3 rounded-full transition-all duration-300"
+                  className="bg-blue-600 h-3 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
           )}
 
-          {/* Loading Message */}
           {loadingMessage && (
-            <div className={`p-4 rounded-lg mb-6 ${error ? "hidden" : ""}`}>
-              <p className="text-center text-sm font-medium text-gray-600 dark:text-gray-400">
-                {loadingMessage}
-              </p>
-            </div>
+            <LoadingMessage
+              loadingMessage={loadingMessage}
+              errorMessage={error}
+            />
           )}
 
-          {/* Error Message */}
-          {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6">
-              <div className="flex items-start">
-                <svg
-                  className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span className="text-sm">{error}</span>
-              </div>
-            </div>
-          )}
+          {error && <ErrorMessage errorMessage={error} />}
 
           <Download audioUrl={audioUrl} videoFile={videoFile} />
           <Info />

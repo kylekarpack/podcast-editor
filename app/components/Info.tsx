@@ -6,7 +6,7 @@ export default function Info() {
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="flex flex-col items-center text-center">
-          <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-3">
+          <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mb-3">
             <span className="text-2xl">📁</span>
           </div>
           <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
@@ -17,7 +17,7 @@ export default function Info() {
           </p>
         </div>
         <div className="flex flex-col items-center text-center">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-3">
+          <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mb-3">
             <span className="text-2xl">⚙️</span>
           </div>
           <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
@@ -28,7 +28,7 @@ export default function Info() {
           </p>
         </div>
         <div className="flex flex-col items-center text-center">
-          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-3">
+          <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mb-3">
             <span className="text-2xl">💾</span>
           </div>
           <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
