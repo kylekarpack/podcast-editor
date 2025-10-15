@@ -3,6 +3,8 @@
 import { useState, useRef } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import Info from "./components/Info";
+import Download from "./components/Download";
 
 export default function Home() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -115,17 +117,6 @@ export default function Home() {
       setIsLoading(false);
       setProgress(0);
     }
-  };
-
-  const handleDownload = () => {
-    if (!audioUrl || !videoFile) return;
-
-    const a = document.createElement("a");
-    a.href = audioUrl;
-    a.download = videoFile.name.replace(/\.[^/.]+$/, ".mp3");
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   };
 
   const resetUpload = () => {
@@ -267,7 +258,7 @@ export default function Home() {
                   Processing...
                 </span>
               ) : (
-                "🎵 Extract Audio"
+                "Extract Audio"
               )}
             </button>
 
@@ -331,101 +322,8 @@ export default function Home() {
             </div>
           )}
 
-          {/* Download Section */}
-          {audioUrl && (
-            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <svg
-                    className="w-12 h-12 text-green-500 mr-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-                    />
-                  </svg>
-                  <div>
-                    <h3 className="text-lg font-semibold text-green-700 dark:text-green-400">
-                      Audio Ready!
-                    </h3>
-                    <p className="text-sm text-green-600 dark:text-green-500">
-                      Your audio file has been extracted successfully
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleDownload}
-                  className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
-                >
-                  Download MP3
-                </button>
-              </div>
-
-              {/* Audio Player */}
-              <div className="mt-4">
-                <audio
-                  controls
-                  src={audioUrl}
-                  className="w-full"
-                  style={{ height: "40px" }}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Info Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-            How it works
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-3">
-                <span className="text-2xl">📁</span>
-              </div>
-              <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
-                1. Upload Video
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Select your video file from your device
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-3">
-                <span className="text-2xl">⚙️</span>
-              </div>
-              <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
-                2. Extract Audio
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                We process your video in your browser using FFmpeg
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-3">
-                <span className="text-2xl">💾</span>
-              </div>
-              <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
-                3. Download
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Get your audio file in MP3 format
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <p className="text-sm text-blue-800 dark:text-blue-300">
-              <strong>🔒 Privacy:</strong> All processing happens in your
-              browser. Your files never leave your device!
-            </p>
-          </div>
+          <Download audioUrl={audioUrl} videoFile={videoFile} />
+          <Info />
         </div>
       </div>
     </div>
