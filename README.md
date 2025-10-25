@@ -1,28 +1,23 @@
 # Video to Audio Converter
 
-A modern, privacy-focused web application that extracts audio from video files directly in your browser. No server uploads required - all processing happens locally using FFmpeg WebAssembly.
-
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8)
-![FFmpeg](https://img.shields.io/badge/FFmpeg-WASM-green)
+A modern web application that extracts audio from video files directly in your browser. No server uploads required and all processing happens locally using FFmpeg WASM.
 
 ## Features
 
 - **Multiple Format Support**: Works with MP4, MOV, AVI, MKV, and more
-- **Privacy First**: All processing happens in your browser - files never leave your device
+- **Privacy First**: All processing happens in your browser and files never leave your device
 - **Fast & Efficient**: Powered by FFmpeg WebAssembly for high-quality audio extraction
 - **Modern UI**: Beautiful, responsive design with dark mode support
 - **Real-time Progress**: Visual feedback during audio extraction
 - **Built-in Preview**: Listen to your extracted audio before downloading
-- **High-Quality Output**: Extracts audio in MP3 format with excellent quality
+- **High-Quality Output**: Extracts audio in MP3 format
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18.x or higher
-- npm, yarn, pnpm, or bun
+- npm, yarn, or pnpm (preferred)
 
 ### Installation
 
@@ -36,20 +31,12 @@ cd podcast-editor
 2. Install dependencies:
 
 ```bash
-npm install
-# or
-yarn install
-# or
 pnpm install
 ```
 
 3. Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
 ```
 
@@ -70,27 +57,6 @@ pnpm dev
 - **Audio Processing**: [@ffmpeg/ffmpeg](https://github.com/ffmpegwasm/ffmpeg.wasm)
 - **Package Manager**: npm
 
-## Project Structure
-
-```
-podcast-editor/
-├── app/
-│   ├── page.tsx          # Main application page with upload & conversion logic
-│   ├── layout.tsx        # Root layout component
-│   └── globals.css       # Global styles
-├── public/               # Static assets
-├── package.json          # Dependencies and scripts
-└── README.md            # This file
-```
-
-## Configuration
-
-The app uses FFmpeg.wasm v0.12.6 from unpkg CDN. If you need to change the FFmpeg version or use a local copy, modify the `loadFFmpeg` function in `app/page.tsx`:
-
-```typescript
-const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd";
-```
-
 ## Browser Support
 
 This app requires a modern browser with WebAssembly support:
@@ -103,10 +69,10 @@ Note: Due to browser security requirements, the app must be served over HTTPS in
 
 ## Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+- `pnpm run dev` - Start development server
+- `pnpm run build` - Build for production
+- `pnpm run start` - Start production server
+- `pnpm run lint` - Run ESLint
 
 ## Contributing
 
@@ -115,12 +81,6 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 ## License
 
 See the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [FFmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) - FFmpeg for browsers
-- [Next.js](https://nextjs.org/) - The React framework
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 
 ## Tips
 
