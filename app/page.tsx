@@ -22,7 +22,7 @@ export default function Home() {
   const loadFFmpeg = async () => {
     if (ffmpegRef.current?.loaded) {
       return;
-    };
+    }
 
     const ffmpeg = new FFmpeg();
     ffmpegRef.current = ffmpeg;
@@ -38,8 +38,7 @@ export default function Home() {
     setLoadingMessage("Loading FFmpeg...");
 
     try {
-      const baseURL =
-        "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd";
+      const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd";
       await ffmpeg.load({
         coreURL: await toBlobURL(
           `${baseURL}/ffmpeg-core.js`,
@@ -97,7 +96,7 @@ export default function Home() {
       setLoadingMessage("Preparing download...");
       try {
         const data = await ffmpeg.readFile("output.mp3");
-        const blob = new Blob([data], { type: "audio/mp3" });
+        const blob = new Blob([data as any], { type: "audio/mp3" });
         const url = URL.createObjectURL(blob);
 
         setAudioUrl(url);
@@ -155,8 +154,7 @@ export default function Home() {
                     ? "border-green-500 bg-green-50 dark:bg-green-900/20"
                     : "border-gray-300 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
                 }
-              `}
-            >
+              `}>
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 {videoFile ? (
                   <>
@@ -164,8 +162,7 @@ export default function Home() {
                       className="w-16 h-16 mb-4 text-green-500"
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                      viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -186,8 +183,7 @@ export default function Home() {
                       className="w-16 h-16 mb-4 text-gray-400"
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                      viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -230,15 +226,13 @@ export default function Home() {
                     ? "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
                 }
-              `}
-            >
+              `}>
               {isLoading ? (
                 <span className="flex items-center justify-center">
                   <svg
                     className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                     fill="none"
-                    viewBox="0 0 24 24"
-                  >
+                    viewBox="0 0 24 24">
                     <circle
                       className="opacity-25"
                       cx="12"
@@ -264,8 +258,7 @@ export default function Home() {
               <button
                 onClick={resetUpload}
                 disabled={isLoading}
-                className="px-6 py-4 rounded-xl font-semibold text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200"
-              >
+                className="px-6 py-4 rounded-xl font-semibold text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
                 Reset
               </button>
             )}
