@@ -11,7 +11,7 @@
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
     "@wavesurfer/react": "^1.0.11",
-    "next": "15.5.5",
+    "next": "16.0.8",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "wavesurfer.js": "^7.11.0"
